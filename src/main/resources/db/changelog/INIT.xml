@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="1" author="Kassia">
+        <preConditions onFail="MARK_RAN" onFailMessage="Já existe a tabela EMPRESA">
+            <not>
+                <tableExists tableName="EMPRESA"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="EMPRESA">
+
+            <column name="CODEMPRESA"  autoIncrement="true" type="int">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_EMPRESA"/>
+            </column>
+
+            <column name="CNPJ" type="VARCHAR(20)"/>
+
+            <column name="RAZAOSOCIAL" type="VARCHAR(20)"/>
+
+            <column name="STATUS" type="boolean"/>
+
+            <column name="LOGRADOURO" type="VARCHAR(20)"/>
+
+            <column name="BAIRRO" type="VARCHAR(20)"/>
+
+            <column name="NUMERO" type="VARCHAR(4)"/>
+
+            <column name="CEP" type="VARCHAR(8)"/>
+
+        </createTable>
+     </changeSet>
+
+    <changeSet id="2" author="Brunna">
+        <preConditions onFail="MARK_RAN" onFailMessage="Já existe a tabela CLIENTE">
+            <not>
+                <tableExists tableName="CLIENTE"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="CLIENTE">
+
+            <column name="CODCLIENTE" autoIncrement="true" type="int">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CLIENTE"/>
+            </column>
+
+            <column name="NOME" type="VARCHAR(20)"/>
+
+            <column name="CPF" type="VARCHAR(11)"/>
+
+            <column name="DATANASCIMENTO" type="DATE"/>
+
+            <column name="GENERO" type="VARCHAR(10)"/>
+
+            <column name="CELULAR" type="VARCHAR(11)"/>
+
+            <column name="EMAIL" type="VARCHAR(50)"/>
+
+            <column name="LOGRADOURO" type="VARCHAR(20)"/>
+
+            <column name="BAIRRO" type="VARCHAR(20)"/>
+
+            <column name="NUMERO" type="VARCHAR(4)"/>
+
+            <column name="CEP" type="VARCHAR(8)"/>
+
+        </createTable>
+    </changeSet>
+
+        <changeSet id="3" author="Natalia">
+            <preConditions onFail="MARK_RAN" onFailMessage="Já existe a tabela COLABORADOR">
+                <not>
+                    <tableExists tableName="COLABORADOR"/>
+                </not>
+            </preConditions>
+    
+            <createTable tableName="COLABORADOR">
+    
+                <column name="CODCOLABORADOR"  autoIncrement="true" type="int">
+                    <constraints nullable="false" primaryKey="true" primaryKeyName="PK_COLABORADOR"/>
+                </column>
+    
+                <column name="NOME" type="VARCHAR(250)"/>
+    
+                <column name="DATANASCIMENTO" type="DATE"/>
+    
+                <column name="EMAIL" type="VARCHAR(250)"/>
+    
+                <column name="CELULAR" type="VARCHAR(11)"/>
+    
+                <column name="DATACONTRATO" type="DATE"/>
+    
+                <column name="STATUS" type="BOOLEAN"/>
+    
+                <column name="CODEMPRESA" type="INT">
+                    <constraints nullable="false" foreignKeyName="FK_EMPRESA" references="EMPRESA(CODEMPRESA)"/>
+                </column>
+
+            </createTable>
+        </changeSet>
+
+        <changeSet id="4" author="Guilherme">
+            <preConditions onFail="MARK_RAN" onFailMessage="Já existe a tabela SERVIÇO">
+                <not>
+                    <tableExists tableName="SERVICO"/>
+                </not>
+            </preConditions>
+    
+            <createTable tableName="SERVICO">
+
+                <column name="DESCRICAO" type="VARCHAR(250)"/>
+    
+                <column name="CODSERVICO"  autoIncrement="true" type="int">
+                    <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SERVICO"/>
+                </column>
+    
+                <column name="CODEMPRESA" type="INT">
+                    <constraints nullable="false" foreignKeyName="FK_EMPRESA_SERVICO" references="EMPRESA(CODEMPRESA)"/>
+                </column>
+    
+                <column name="DURACAO" type="INT"/>
+
+                <column name="VALORSERVICO" type="DOUBLE"/>
+    
+            </createTable>
+        </changeSet>
+
+    
+    <changeSet id="5" author="Joao">
+        <preConditions onFail="MARK_RAN" onFailMessage="Já existe a tabela AGENDAMENTO">
+            <not>
+                <tableExists tableName="AGENDAMENTO"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="AGENDAMENTO">
+
+            <column name="CODAGENDAMENTO"  autoIncrement="true" type="int">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AGENDAMENTO"/>
+            </column>
+
+            <column name="CODSERVICO" type="int">
+                <constraints nullable="false" foreignKeyName="FK_SERVICO_AGENDAMENTO" references="SERVICO(CODSERVICO)"/>
+            </column>
+
+            <column name="CODCOLABORADOR" type="int">
+                <constraints nullable="false" foreignKeyName="FK_COLABORADOR_AGENDAMENTO" references="COLABORADOR(CODCOLABORADOR)"/>
+            </column>
+
+            <column name="CODEMPRESA" type="int">
+                <constraints nullable="false" foreignKeyName="FK_EMPRESA_AGENDAMENTO" references="EMPRESA(CODEMPRESA)"/>
+            </column>
+
+            <column name="CODCLIENTE" type="int">
+                <constraints nullable="false" foreignKeyName="FK_CLIENTE_AGENDAMENTO" references="CLIENTE(CODCLIENTE)"/>
+            </column>
+
+            <column name="DATAHORA" type="timestamp"/>
+
+
+        </createTable>
+    </changeSet>
+        
+</databaseChangeLog>
